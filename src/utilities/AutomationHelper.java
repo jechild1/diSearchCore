@@ -3,6 +3,7 @@ package utilities;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -10,8 +11,9 @@ import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
-
 
 /**
  * This class is the configuration class that is used by projects and is meant
@@ -250,6 +252,38 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 	}
 
 	/**
+	 * Utility method to wait for an element to be PRESENT and VISIBLE on the DOM. A
+	 * Hidden element is NOT good enough to return.
+	 * 
+	 * @param locator
+	 * @param seconds
+	 */
+	public static void waitForElementToBePresent(By locator, int seconds) {
+
+		AutomationHelper.printMethodName();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+	}
+	
+	/**
+	 * Utility method to wait for an element to NOT be PRESENT and VISIBLE on the DOM. A
+	 * Hidden element is NOT good enough to return.
+	 * 
+	 * @param locator
+	 * @param seconds
+	 */
+	public static void waitForElementToNotBePresent(By locator, int seconds) {
+
+		AutomationHelper.printMethodName();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+		wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(locator)));
+	}
+	
+	
+
+	/**
 	 * Returns if a WebElement is Enabled or not. The WebElement can exist in the
 	 * DOM, but if it is not interactable and enabled, it will return false.
 	 * 
@@ -264,7 +298,6 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 		return currentWebElement.isEnabled() ? true : false;
 
 	}
-	
 
 	public static void waitForObjectToDisappear(By locator, long waitTimeInSeconds, boolean throwEx) {
 

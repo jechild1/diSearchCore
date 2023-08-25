@@ -426,6 +426,9 @@ public class DiTables extends diCoreConfig.CoreConfig {
 			int primaryColIndex = getColumnIndex(primaryColumnHeader, false);
 			// Get the rowIndex for the row in the primary column.
 			rowIndex = getRowIndex(primaryColIndex, primaryColumnValue, false);
+			
+			//We need to ensure that pagination is starting on page one.
+//			getPagination().goToFirstPageInPagination();
 
 			// Click the next arrow and look again.
 			if (getPagination().isPaginationPresent() && rowIndex == -1) {
@@ -1233,7 +1236,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		 * @return int the page number
 		 */
 		public int getPaginationPageNumber() {
-			AutomationHelper.printMethodName();
+//			AutomationHelper.printMethodName();
 
 			// Grab the container WebElement. The list items contains the text
 			// "item-active". We can pull the title property and get the page number
@@ -1244,6 +1247,27 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 			return pageNumber;
 
+		}
+		
+		/**
+		 * Utility Method to go to the first page in the patination links.
+		 */
+		public void goToFirstPageInPagination() {
+			
+			//Do nothing if we are already on the first page.
+			
+			if(getPaginationPageNumber() != 1) {
+				
+				while(getPaginationPageNumber() != 1) {
+					WebElement backArrow = driver.findElement(By.xpath("//ul[@class = 'ant-pagination page_cont']//li[@title = 'Previous Page']"));
+					backArrow.click();
+					waitForPageToLoad();
+					
+				}
+				
+			}
+			
+			
 		}
 	}
 

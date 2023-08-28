@@ -136,12 +136,12 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		//If the row index is NOT -1, then we found the object and can click it.
 		
 		WebElement tableCell = getCell(rowIndex, primaryColIndex, true);
-		
-		WebElement link = tableCell.findElement(By.xpath("//p"));
+				
+		//This xpath gave me lots of trouble. Used to be just //p but that kept clicking link above. Must have got duplicates?
+		WebElement link = tableCell.findElement(By.xpath("//p[contains(text(),'" + linkText + "')]"));
 		
 		link.click();
-		
-
+	
 		Reporter.log("Link " + linkText + " clicked for row " + rowIndex + ".", true);
 	}
 

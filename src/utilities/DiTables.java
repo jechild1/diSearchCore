@@ -14,7 +14,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Reporter;
 
-
 public class DiTables extends diCoreConfig.CoreConfig {
 
 	public WebElement table;
@@ -27,27 +26,27 @@ public class DiTables extends diCoreConfig.CoreConfig {
 	 */
 	public DiTables(String tableXpath) {
 //		table = tableReference;
-		
+
 		this.tableXpath = tableXpath;
-		
+
 		List<WebElement> tableList = driver.findElements(By.xpath(tableXpath));
 
 		if (tableList.size() == 0) {
 			throw new NoSuchElementException(
 					"The table does not exist on the page. Ensure that there is a table present on the page.");
 		}
-		
-		table = tableList.get(0);		
+
+		table = tableList.get(0);
 
 	}
-	
+
 	private void getNewTableReference() {
 		this.table = driver.findElement(By.xpath(tableXpath));
 	}
 
 	/**
-	 * Clicks the Delete / Trash Can icon table row with that matches value 1 and
-	 * value 2. Note: This method will wait on the page to load each time.
+	 * Clicks the Delete / Trash Can icon table row with that matches value 1 Note:
+	 * This method will wait on the page to load each time.
 	 * 
 	 * @param rowValueOne
 	 * @param linkText
@@ -58,7 +57,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		WebElement myRow = null;
 
 		// Create a list of table rows
-		List<WebElement> tableRows = table.findElements(By.tagName("tr"));
+		List<WebElement> tableRows = table.findElements(By.xpath("//tbody/tr"));
 
 		// Loop through all the table rows to find the row containing the value
 		// 1 and value 2 combination.
@@ -75,20 +74,17 @@ public class DiTables extends diCoreConfig.CoreConfig {
 			throw new RuntimeException("Cannot click link. There are no rows found in the table for " + rowValueOne);
 		}
 
-		WebElement trashCan = myRow.findElement(By.xpath("//*[name()='svg' and contains (@data-icon,'delete') ]"));
+		// When reducing the scope of a find, you must put a . before the //
+		WebElement trashCan = myRow.findElement(By.xpath(".//button"));
+
 		trashCan.click();
-		
-		
-		
 
 		waitForPageToLoad();
-		
-		
-		//CODE TO GO HERE TO WAIT ON MESSAGE TO APPEAR AND DISAPPEAR
+
+		// CODE TO GO HERE TO WAIT ON MESSAGE TO APPEAR AND DISAPPEAR
 		AutomationHelper.waitForObjectToDisappear(By.xpath("//span[text() = 'File Deleted']"), 5, true);
-		
-		waitForPageToLoad();
 
+		waitForPageToLoad();
 
 		Reporter.log("Trash can icon clicked for row " + rowValueOne + ".", true);
 	}
@@ -101,8 +97,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 	 * @param linkText
 	 */
 	public void clickLinkInRow(String primaryColumnHeader, String linkText) {
-		
-		
+
 		int rowIndex = -1;
 		int primaryColIndex = -1;
 		do {
@@ -114,34 +109,31 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 			// Get CellIndex for Primary column Header
 			primaryColIndex = getColumnIndex(primaryColumnHeader, false);
-			
-			
+
 			// Get the rowIndex for the row in the primary column.
 			rowIndex = getRowIndex(primaryColIndex, linkText, false);
-			
-			
+
 			// Click the next arrow and look again.
 			if (getPagination().isPaginationPresent() && rowIndex == -1) {
 				getPagination().clickNextPagination();
-				
+
 				waitForPageToLoad();
 				getNewTableReference();
 
-				
-				
 			}
 
 		} while (rowIndex == -1 && getPagination().isPaginationPresent());
-		
-		//If the row index is NOT -1, then we found the object and can click it.
-		
+
+		// If the row index is NOT -1, then we found the object and can click it.
+
 		WebElement tableCell = getCell(rowIndex, primaryColIndex, true);
-				
-		//This xpath gave me lots of trouble. Used to be just //p but that kept clicking link above. Must have got duplicates?
+
+		// This xpath gave me lots of trouble. Used to be just //p but that kept
+		// clicking link above. Must have got duplicates?
 		WebElement link = tableCell.findElement(By.xpath("//p[contains(text(),'" + linkText + "')]"));
-		
+
 		link.click();
-	
+
 		Reporter.log("Link " + linkText + " clicked for row " + rowIndex + ".", true);
 	}
 
@@ -426,8 +418,8 @@ public class DiTables extends diCoreConfig.CoreConfig {
 			int primaryColIndex = getColumnIndex(primaryColumnHeader, false);
 			// Get the rowIndex for the row in the primary column.
 			rowIndex = getRowIndex(primaryColIndex, primaryColumnValue, false);
-			
-			//We need to ensure that pagination is starting on page one.
+
+			// We need to ensure that pagination is starting on page one.
 //			getPagination().goToFirstPageInPagination();
 
 			// Click the next arrow and look again.
@@ -1196,10 +1188,9 @@ public class DiTables extends diCoreConfig.CoreConfig {
 			// Boolean to store if pagination is present
 			boolean paginationPresent;
 
-			// The > button for pagination is located in a span. We can get the span and
-			// then its parent.
+			// The > button for pagination
 			WebElement rightNavButton = driver
-					.findElement(By.xpath("//span[@class = 'anticon anticon-right']/parent::button"));
+					.findElement(By.xpath("//button[@aria-label = 'Go to next page']"));
 
 			// Get the disabled attribute of the button
 			String disabledAttribute = rightNavButton.getAttribute("disabled");
@@ -1223,7 +1214,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 			AutomationHelper.printMethodName();
 
 			WebElement rightNavButton = driver
-					.findElement(By.xpath("//span[@class = 'anticon anticon-right']/parent::button"));
+					.findElement(By.xpath("//button[@aria-label = 'Go to next page']"));
 
 			rightNavButton.click();
 			waitForPageToLoad();
@@ -1241,33 +1232,35 @@ public class DiTables extends diCoreConfig.CoreConfig {
 			// Grab the container WebElement. The list items contains the text
 			// "item-active". We can pull the title property and get the page number
 			WebElement paginationContainer = driver.findElement(
-					By.xpath("//ul[@class = 'ant-pagination page_cont']/li[contains (@class,'item-active')]"));
+					By.xpath("//ul [contains(@class , 'MuiPagination-ul')]//button[@aria-current = 'true']"));
 
-			int pageNumber = Integer.valueOf(paginationContainer.getAttribute("title"));
+//			int pageNumber = Integer.valueOf(paginationContainer.getAttribute("title"));
+			int pageNumber = Integer.valueOf(paginationContainer.getText());
+
 
 			return pageNumber;
 
 		}
-		
+
 		/**
 		 * Utility Method to go to the first page in the patination links.
 		 */
 		public void goToFirstPageInPagination() {
-			
-			//Do nothing if we are already on the first page.
-			
-			if(getPaginationPageNumber() != 1) {
-				
-				while(getPaginationPageNumber() != 1) {
-					WebElement backArrow = driver.findElement(By.xpath("//ul[@class = 'ant-pagination page_cont']//li[@title = 'Previous Page']"));
+
+			// Do nothing if we are already on the first page.
+
+			if (getPaginationPageNumber() != 1) {
+
+				while (getPaginationPageNumber() != 1) {
+					WebElement backArrow = driver.findElement(
+							By.xpath("//ul[@class = 'ant-pagination page_cont']//li[@title = 'Previous Page']"));
 					backArrow.click();
 					waitForPageToLoad();
-					
+
 				}
-				
+
 			}
-			
-			
+
 		}
 	}
 

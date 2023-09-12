@@ -123,17 +123,33 @@ public abstract class CoreConfig {
 		case "edge":
 			
 			
-			HashMap<String, Object> edgePrefs = new HashMap<String, Object>();
-			edgePrefs.put("profile.default_content_settings.popups",0);
-			edgePrefs.put("profile.default_content_setting_values.notifications",2);		
-			edgePrefs.put("profile.default_content_setting_values.automatic_downloads" ,1);		
-			edgePrefs.put("profile.content_settings.pattern_pairs.*,*.multiple-automatic-downloads",1);
+//			HashMap<String, Object> edgePrefs = new HashMap<String, Object>();
+//			edgePrefs.put("profile.default_content_settings.popups",0);
+//			edgePrefs.put("profile.default_content_setting_values.notifications",2);		
+//			edgePrefs.put("profile.default_content_setting_values.automatic_downloads" ,1);		
+//			edgePrefs.put("profile.content_settings.pattern_pairs.*,*.multiple-automatic-downloads",1);
+//			
+//			EdgeOptions egdeOptions = new EdgeOptions();
+//			egdeOptions.setExperimentalOption("prefs",edgePrefs);
 			
-			EdgeOptions egdeOptions = new EdgeOptions();
-			egdeOptions.setExperimentalOption("prefs",edgePrefs);
+		       // Create EdgeOptions to customize browser behavior
+	        EdgeOptions edgeOptions = new EdgeOptions();
+
+	        // Disable notifications
+	        edgeOptions.addArguments("--disable-notifications");
+	        edgeOptions.addArguments("--disable-features=msHubApps");
+	        
+	     // Here you set the path of the profile ending with User Data not the profile folder
+//	        edgeOptions.addArguments("user-data-dir=C:\\Users\\jesse\\AppData\\Local\\Microsoft\\Edge\\User Data");
+//
+//	        // Here you specify the actual profile folder
+//	        edgeOptions.addArguments("profile-directory=Profile 2");
+	        
+
+			
 			
 			WebDriverManager.edgedriver().setup();
-			driver = new EdgeDriver(egdeOptions);
+			driver = new EdgeDriver(edgeOptions);
 			break;
 
 		case "chrome":

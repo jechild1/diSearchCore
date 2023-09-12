@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Reporter;
@@ -122,12 +123,54 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 	}
 
 	/**
+	 * Simulates a Tab key press and release on the keyboard.
+	 */
+	public static void hitTab() {
+
+		Robot robot = null;
+		try {
+			robot = new Robot();
+			robot.keyPress(KeyEvent.VK_TAB);
+			robot.keyRelease(KeyEvent.VK_TAB);
+		} catch (AWTException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Simulates an Arrow Down key press and release on the keyboard.
+	 */
+	public static void hitArrowDown() {
+
+		Robot robot = null;
+		try {
+			robot = new Robot();
+			robot.keyPress(KeyEvent.VK_DOWN);
+			robot.keyRelease(KeyEvent.VK_DOWN);
+		} catch (AWTException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Returns the Page Title.
 	 * 
 	 * @return String
 	 */
 	public static String getPageTitle() {
 		return driver.getTitle();
+	}
+
+	/**
+	 * Moves the mouse to the passed in element
+	 * 
+	 * @param element
+	 */
+	public static void hoverOverElement(WebElement element) {
+		Actions action = new Actions(driver);
+		action.moveToElement(element).perform();
 	}
 
 	/**
@@ -265,10 +308,10 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
 		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 	}
-	
+
 	/**
-	 * Utility method to wait for an element to NOT be PRESENT and VISIBLE on the DOM. A
-	 * Hidden element is NOT good enough to return.
+	 * Utility method to wait for an element to NOT be PRESENT and VISIBLE on the
+	 * DOM. A Hidden element is NOT good enough to return.
 	 * 
 	 * @param locator
 	 * @param seconds
@@ -280,8 +323,6 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
 		wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOfElementLocated(locator)));
 	}
-	
-	
 
 	/**
 	 * Returns if a WebElement is Enabled or not. The WebElement can exist in the

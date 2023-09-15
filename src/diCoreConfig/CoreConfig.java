@@ -2,6 +2,7 @@ package diCoreConfig;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +14,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
+import org.testng.ITestResult;
 import org.testng.Reporter;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -61,10 +63,10 @@ public abstract class CoreConfig {
 		launchAndConfigureBrowser(driver);
 
 		waitForPageToLoad();
-		
-		//TODO - Remove this after AS-182 is corrected.
+
+		// TODO - Remove this after AS-182 is corrected.
 //		AutomationHelper.waitSeconds(3);
-		
+
 		PageFactory.initElements(driver, this);
 	}
 
@@ -106,7 +108,7 @@ public abstract class CoreConfig {
 		String selectedBrowser = getSelectedBrowser();
 
 		// Default browser in string if not user selected from xml test suite file.
-		selectedBrowser = selectedBrowser != null ? selectedBrowser : "firefox";
+		selectedBrowser = selectedBrowser != null ? selectedBrowser : "edge";
 
 		// Switch statement to go through each browser and set properties, if need be.
 		// See archived core classes for options, if need be.
@@ -121,34 +123,16 @@ public abstract class CoreConfig {
 			break;
 
 		case "edge":
-			
-			
-//			HashMap<String, Object> edgePrefs = new HashMap<String, Object>();
-//			edgePrefs.put("profile.default_content_settings.popups",0);
-//			edgePrefs.put("profile.default_content_setting_values.notifications",2);		
-//			edgePrefs.put("profile.default_content_setting_values.automatic_downloads" ,1);		
-//			edgePrefs.put("profile.content_settings.pattern_pairs.*,*.multiple-automatic-downloads",1);
-//			
-//			EdgeOptions egdeOptions = new EdgeOptions();
-//			egdeOptions.setExperimentalOption("prefs",edgePrefs);
-			
-		       // Create EdgeOptions to customize browser behavior
-	        EdgeOptions edgeOptions = new EdgeOptions();
 
-	        // Disable notifications
-	        edgeOptions.addArguments("--disable-notifications");
-	        edgeOptions.addArguments("--disable-features=msHubApps");
-	        
-	     // Here you set the path of the profile ending with User Data not the profile folder
-//	        edgeOptions.addArguments("user-data-dir=C:\\Users\\jesse\\AppData\\Local\\Microsoft\\Edge\\User Data");
-//
-//	        // Here you specify the actual profile folder
-//	        edgeOptions.addArguments("profile-directory=Profile 2");
-	        
+			// Create EdgeOptions to customize browser behavior
+			EdgeOptions edgeOptions = new EdgeOptions();
 
-			
-			
+			// Having this argument removes the right hand bar for settings and bing, which
+			// appears in front of the application.
+			edgeOptions.addArguments("--guest");
+
 			WebDriverManager.edgedriver().setup();
+
 			driver = new EdgeDriver(edgeOptions);
 			break;
 
@@ -161,7 +145,7 @@ public abstract class CoreConfig {
 			WebDriverManager.firefoxdriver().setup();
 			driver = new FirefoxDriver();
 			break;
-			
+
 		default:
 			WebDriverManager.firefoxdriver().setup();
 			driver = new FirefoxDriver();
@@ -243,5 +227,4 @@ public abstract class CoreConfig {
 		}
 
 	}
-
 }

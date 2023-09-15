@@ -340,6 +340,13 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 
 	}
 
+	/**
+	 * Waits for an object to disappear on the page.
+	 * 
+	 * @param locator
+	 * @param waitTimeInSeconds
+	 * @param throwEx
+	 */
 	public static void waitForObjectToDisappear(By locator, long waitTimeInSeconds, boolean throwEx) {
 
 		AutomationHelper.printMethodName();
@@ -371,5 +378,20 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 			throw new NoSuchElementException("Waited for the element " + locator + " to disappear, but it did not.");
 
 		}
+	}
+	
+	/**
+	 * Waits for an object to disappear on the page. This looks for a message like
+	 * "File Deleted!" or "Your files will be available soon". You must have the
+	 * case and spelling exactly correct.
+	 * 
+	 * @param notificationMessage
+	 * @param waitTimeInSeconds
+	 * @param throwEx
+	 */
+	public static void waitForNotificationToDisappear(String notificationMessage, long waitTimeInSeconds, boolean throwEx) {
+		//We will call another method to do the work.
+		//We only need to pass a locator into the other method.
+		waitForObjectToDisappear(By.xpath("//span[text() = '"+ notificationMessage +"']"), waitTimeInSeconds, throwEx);	
 	}
 }

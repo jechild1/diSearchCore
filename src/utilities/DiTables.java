@@ -100,6 +100,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 		int rowIndex = -1;
 		int primaryColIndex = -1;
+		boolean paginationPresent;
 		do {
 
 			// Print in logs both the table search criteria and the table page
@@ -113,8 +114,15 @@ public class DiTables extends diCoreConfig.CoreConfig {
 			// Get the rowIndex for the row in the primary column.
 			rowIndex = getRowIndex(primaryColIndex, linkText, false);
 
-			// Click the next arrow and look again.
-			if (getPagination().isPaginationPresent() && rowIndex == -1) {
+			// We need to know if Pagination is present before we go into the loop.
+			paginationPresent = getPagination().isPaginationPresent();
+			
+			// Click the next arrow and look again, if conditions are met.
+			if (paginationPresent && rowIndex == -1) {
+
+				// There is a chance that clicking pagination here puts us to the end of the
+				// loop. If so, that's OK because our next reference won't happen until we
+				// execute the loop again.
 				getPagination().clickNextPagination();
 
 				waitForPageToLoad();
@@ -122,7 +130,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 			}
 
-		} while (rowIndex == -1 && getPagination().isPaginationPresent());
+		} while (rowIndex == -1 && paginationPresent);
 
 		// If the row index is NOT -1, then we found the object and can click it.
 
@@ -609,52 +617,6 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 		return aquiredCell;
 	}
-
-	// public static boolean readActiveStatusFromRow(WebElement table, String
-	// rowValueOne, String rowValueTwo) {
-	// Reporter.log("Beginning Active Status checkbox status read for row " +
-	// rowValueOne + " " + rowValueTwo + ".",
-	// true);
-	//
-	// boolean checkboxStatus;
-	// // Take the two row values and concatenate them.
-	// String myConcatenatedString = rowValueOne.trim() + " " +
-	// rowValueTwo.trim();
-	// WebElement myRow = null;
-	//
-	// // Create a list of all of the rows in the table.
-	// List<WebElement> tableRows = table.findElements(By.tagName("tr"));
-	//
-	// // Loop through all the table rows to find the row containing the value
-	// // 1 and value 2 combination.
-	// for (WebElement currentRow : tableRows) {
-	// if (currentRow.getText().trim().contains(myConcatenatedString)) {
-	// myRow = currentRow;
-	// break;
-	// }
-	// }
-	//
-	// // If we did not find a row, we should throw an exception and not
-	// // process further.
-	// if (myRow == null) {
-	// throw new RuntimeException("Cannot perform Active checkbox read. There
-	// are no
-	// rows found in the table for "
-	// + myConcatenatedString);
-	// }
-	//
-	// // get the status of the checkbox in the row we found.
-	// WebElement checkbox = myRow.findElement(By.id("item_ActiveFlag"));
-	// checkboxStatus = Boolean.valueOf(checkbox.getAttribute("checked"));
-	//
-	// Reporter.log("Active Checkbox status for " + rowValueOne + " " +
-	// rowValueTwo
-	// + " is: " + checkboxStatus + ".",
-	// true);
-	// Reporter.log("", true);
-	//
-	// return checkboxStatus;
-	// }
 
 	/**
 	 * This method returns a column index the passed in table/column name
@@ -1189,8 +1151,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 			boolean paginationPresent;
 
 			// The > button for pagination
-			WebElement rightNavButton = driver
-					.findElement(By.xpath("//button[@aria-label = 'Go to next page']"));
+			WebElement rightNavButton = driver.findElement(By.xpath("//button[@aria-label = 'Go to next page']"));
 
 			// Get the disabled attribute of the button
 			String disabledAttribute = rightNavButton.getAttribute("disabled");
@@ -1213,8 +1174,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		public void clickNextPagination() {
 			AutomationHelper.printMethodName();
 
-			WebElement rightNavButton = driver
-					.findElement(By.xpath("//button[@aria-label = 'Go to next page']"));
+			WebElement rightNavButton = driver.findElement(By.xpath("//button[@aria-label = 'Go to next page']"));
 
 			rightNavButton.click();
 			waitForPageToLoad();
@@ -1236,7 +1196,6 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 //			int pageNumber = Integer.valueOf(paginationContainer.getAttribute("title"));
 			int pageNumber = Integer.valueOf(paginationContainer.getText());
-
 
 			return pageNumber;
 

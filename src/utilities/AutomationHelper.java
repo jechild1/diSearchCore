@@ -64,7 +64,11 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 	 * @param text
 	 */
 	public static void setTextField(WebElement element, String text) {
-		element.clear();
+
+		//Necessary IF because sometimes elements are DIV's. If you try to clear a null, you get an error.
+		if (element != null) {
+			element.clear();
+		}
 
 		while (!element.getAttribute(("value")).equals("")) {
 			element.sendKeys(Keys.CONTROL + "A");
@@ -379,7 +383,7 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 
 		}
 	}
-	
+
 	/**
 	 * Waits for an object to disappear on the page. This looks for a message like
 	 * "File Deleted!" or "Your files will be available soon". You must have the
@@ -389,9 +393,11 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 	 * @param waitTimeInSeconds
 	 * @param throwEx
 	 */
-	public static void waitForNotificationToDisappear(String notificationMessage, long waitTimeInSeconds, boolean throwEx) {
-		//We will call another method to do the work.
-		//We only need to pass a locator into the other method.
-		waitForObjectToDisappear(By.xpath("//span[text() = '"+ notificationMessage +"']"), waitTimeInSeconds, throwEx);	
+	public static void waitForNotificationToDisappear(String notificationMessage, long waitTimeInSeconds,
+			boolean throwEx) {
+		// We will call another method to do the work.
+		// We only need to pass a locator into the other method.
+		waitForObjectToDisappear(By.xpath("//span[text() = '" + notificationMessage + "']"), waitTimeInSeconds,
+				throwEx);
 	}
 }

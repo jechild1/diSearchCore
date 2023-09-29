@@ -40,7 +40,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 	}
 
-	private void getNewTableReference() {
+	protected void getNewTableReference() {
 		this.table = driver.findElement(By.xpath(tableXpath));
 	}
 
@@ -116,7 +116,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 			// We need to know if Pagination is present before we go into the loop.
 			paginationPresent = getPagination().isPaginationPresent();
-			
+
 			// Click the next arrow and look again, if conditions are met.
 			if (paginationPresent && rowIndex == -1) {
 
@@ -145,197 +145,197 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		Reporter.log("Link " + linkText + " clicked for row " + rowIndex + ".", true);
 	}
 
-	/**
-	 * Clicks a link in table row with that matches value 1 and value 2, and
-	 * contains the passed in Link Text.
-	 * 
-	 * @param rowValueOne
-	 * @param rowValueTwo
-	 * @param linkText
-	 */
-	public void clickLinkInRow(String rowValueOne, String rowValueTwo, String linkText) {
-		Reporter.log(
-				"Beginning link click for row " + rowValueOne + " " + rowValueTwo + " and link title " + linkText + ".",
-				true);
+//	/**
+//	 * Clicks a link in table row with that matches value 1 and value 2, and
+//	 * contains the passed in Link Text.
+//	 * 
+//	 * @param rowValueOne
+//	 * @param rowValueTwo
+//	 * @param linkText
+//	 */
+//	public void clickLinkInRow(String rowValueOne, String rowValueTwo, String linkText) {
+//		Reporter.log(
+//				"Beginning link click for row " + rowValueOne + " " + rowValueTwo + " and link title " + linkText + ".",
+//				true);
+//
+//		// Take the two row values and concatenate them.
+//		String myConcatenatedString = rowValueOne.trim() + " " + rowValueTwo.trim();
+//		WebElement myRow = null;
+//
+//		// Create a list of table rows
+//		List<WebElement> tableRows = table.findElements(By.tagName("tr"));
+//
+//		// Loop through all the table rows to find the row containing the value
+//		// 1 and value 2 combination.
+//		for (WebElement currentRow : tableRows) {
+//			if (currentRow.getText().trim().contains(myConcatenatedString)) {
+//				myRow = currentRow;
+//				break;
+//			}
+//		}
+//
+//		// If we did not find a row, we should throw an exception and not
+//		// process further.
+//		if (myRow == null) {
+//			throw new RuntimeException(
+//					"Cannot click link. There are no rows found in the table for " + myConcatenatedString);
+//		}
+//
+//		WebElement link = myRow.findElement(By.linkText(linkText));
+//		link.click();
+//
+//		Reporter.log("Link " + linkText + " clicked for row " + rowValueOne + " " + rowValueTwo + ".", true);
+//		Reporter.log("", true);
+//	}
 
-		// Take the two row values and concatenate them.
-		String myConcatenatedString = rowValueOne.trim() + " " + rowValueTwo.trim();
-		WebElement myRow = null;
+//	/**
+//	 * Clicks a link in table row with that matches value 1, value 2, and value 3
+//	 * and contains the passed in Link Text.
+//	 * 
+//	 * @param rowValueOne
+//	 * @param rowValueTwo
+//	 * @param rowValueThree
+//	 * @param linkText
+//	 */
+//	public void clickLinkInRow(String rowValueOne, String rowValueTwo, String rowValueThree, String linkText) {
+//		Reporter.log("Beginning link click for row " + rowValueOne + " " + rowValueTwo + " " + rowValueThree
+//				+ " and link title " + linkText + ".", true);
+//
+//		// Take the three row values and concatenate them.
+//		String myConcatenatedString = rowValueOne.trim() + " " + rowValueTwo.trim() + " " + rowValueThree.trim();
+//		WebElement myRow = null;
+//
+//		// Create a list of table rows
+//		List<WebElement> tableRows = table.findElements(By.tagName("tr"));
+//
+//		// Loop through all the table rows to find the row containing the value
+//		// 1, value 2, & value 3 combination.
+//		for (WebElement currentRow : tableRows) {
+//			if (currentRow.getText().trim().contains(myConcatenatedString)) {
+//				myRow = currentRow;
+//				break;
+//			}
+//		}
+//
+//		// If we did not find a row, we should throw an exception and not
+//		// process further.
+//		if (myRow == null) {
+//			throw new RuntimeException(
+//					"Cannot click link. There are no rows found in the table for " + myConcatenatedString);
+//		}
+//
+//		WebElement link = myRow.findElement(By.linkText(linkText));
+//		link.click();
+//
+//		Reporter.log(
+//				"Link " + linkText + " clicked for row " + rowValueOne + " " + rowValueTwo + " " + rowValueThree + ".",
+//				true);
+//		Reporter.log("", true);
+//	}
 
-		// Create a list of table rows
-		List<WebElement> tableRows = table.findElements(By.tagName("tr"));
+//	/**
+//	 * Clicks a link in table row that matches the passed in link text.
+//	 * 
+//	 * @param tableRow
+//	 * @param linkText
+//	 */
+//	public void clickLinkInRow(WebElement tableRow, String linkText) {
+//		Reporter.log("Beginning link click for row.", true);
+//
+//		// Create a list of all of the links that are children of the Table Row
+//		List<WebElement> childrenLinks = tableRow.findElements(By.xpath("descendant::a"));
+//
+//		if (childrenLinks.size() < 1) {
+//			throw new NoSuchElementException("Cannot find Any links in the table row.");
+//		}
+//
+//		// Found flag
+//		boolean rowFound = false;
+//		for (WebElement currentLink : childrenLinks) {
+//			if (currentLink.getText().equals(linkText)) {
+//				currentLink.click();
+////				AutomationHelper.waitForPageToLoad(NORMAL_TIMEOUT);
+//				rowFound = true;
+//				break;
+//			}
+//		}
+//
+//		if (!rowFound) {
+//			throw new NoSuchElementException("Cannot find a link in the table row with the text '" + linkText + "'.");
+//		}
+//
+//	}
 
-		// Loop through all the table rows to find the row containing the value
-		// 1 and value 2 combination.
-		for (WebElement currentRow : tableRows) {
-			if (currentRow.getText().trim().contains(myConcatenatedString)) {
-				myRow = currentRow;
-				break;
-			}
-		}
+//	/**
+//	 * Clicks a link in specified row column by text
+//	 * 
+//	 * NOTE: use when multiple links are in one column
+//	 * 
+//	 * @param primaryColumnHeader
+//	 * @param primaryColumnValue
+//	 * @param columnToClick
+//	 * @param linkToClick
+//	 * @param throwEx
+//	 */
+//	public void clickLinkInRow(String primaryColumnHeader, String primaryColumnValue, String columnToClick,
+//			String linkToClick, boolean throwEx) {
+//
+//		Reporter.log("Beginning click for '" + linkToClick + "' in '" + columnToClick + "' where primary column is '"
+//				+ primaryColumnHeader + "' and primary column value is '" + primaryColumnValue + ".", true);
+//
+//		// Get CellIndex for Primary column Header
+//		int primaryColIndex = getColumnIndex(primaryColumnHeader, throwEx);
+//		// Get CellIndex for Column to Read
+//		int colToReadCellIndex = getColumnIndex(columnToClick, throwEx);
+//		// Get the rowIndex for the row in the primary column.
+//		int rowIndex = getRowIndex(primaryColIndex, primaryColumnValue, throwEx);
+//
+//		WebElement cell = getCell(rowIndex, colToReadCellIndex, throwEx);
+//
+//		cell.findElement(By.linkText(linkToClick)).click();
+//	}
 
-		// If we did not find a row, we should throw an exception and not
-		// process further.
-		if (myRow == null) {
-			throw new RuntimeException(
-					"Cannot click link. There are no rows found in the table for " + myConcatenatedString);
-		}
-
-		WebElement link = myRow.findElement(By.linkText(linkText));
-		link.click();
-
-		Reporter.log("Link " + linkText + " clicked for row " + rowValueOne + " " + rowValueTwo + ".", true);
-		Reporter.log("", true);
-	}
-
-	/**
-	 * Clicks a link in table row with that matches value 1, value 2, and value 3
-	 * and contains the passed in Link Text.
-	 * 
-	 * @param rowValueOne
-	 * @param rowValueTwo
-	 * @param rowValueThree
-	 * @param linkText
-	 */
-	public void clickLinkInRow(String rowValueOne, String rowValueTwo, String rowValueThree, String linkText) {
-		Reporter.log("Beginning link click for row " + rowValueOne + " " + rowValueTwo + " " + rowValueThree
-				+ " and link title " + linkText + ".", true);
-
-		// Take the three row values and concatenate them.
-		String myConcatenatedString = rowValueOne.trim() + " " + rowValueTwo.trim() + " " + rowValueThree.trim();
-		WebElement myRow = null;
-
-		// Create a list of table rows
-		List<WebElement> tableRows = table.findElements(By.tagName("tr"));
-
-		// Loop through all the table rows to find the row containing the value
-		// 1, value 2, & value 3 combination.
-		for (WebElement currentRow : tableRows) {
-			if (currentRow.getText().trim().contains(myConcatenatedString)) {
-				myRow = currentRow;
-				break;
-			}
-		}
-
-		// If we did not find a row, we should throw an exception and not
-		// process further.
-		if (myRow == null) {
-			throw new RuntimeException(
-					"Cannot click link. There are no rows found in the table for " + myConcatenatedString);
-		}
-
-		WebElement link = myRow.findElement(By.linkText(linkText));
-		link.click();
-
-		Reporter.log(
-				"Link " + linkText + " clicked for row " + rowValueOne + " " + rowValueTwo + " " + rowValueThree + ".",
-				true);
-		Reporter.log("", true);
-	}
-
-	/**
-	 * Clicks a link in table row that matches the passed in link text.
-	 * 
-	 * @param tableRow
-	 * @param linkText
-	 */
-	public void clickLinkInRow(WebElement tableRow, String linkText) {
-		Reporter.log("Beginning link click for row.", true);
-
-		// Create a list of all of the links that are children of the Table Row
-		List<WebElement> childrenLinks = tableRow.findElements(By.xpath("descendant::a"));
-
-		if (childrenLinks.size() < 1) {
-			throw new NoSuchElementException("Cannot find Any links in the table row.");
-		}
-
-		// Found flag
-		boolean rowFound = false;
-		for (WebElement currentLink : childrenLinks) {
-			if (currentLink.getText().equals(linkText)) {
-				currentLink.click();
-//				AutomationHelper.waitForPageToLoad(NORMAL_TIMEOUT);
-				rowFound = true;
-				break;
-			}
-		}
-
-		if (!rowFound) {
-			throw new NoSuchElementException("Cannot find a link in the table row with the text '" + linkText + "'.");
-		}
-
-	}
-
-	/**
-	 * Clicks a link in specified row column by text
-	 * 
-	 * NOTE: use when multiple links are in one column
-	 * 
-	 * @param primaryColumnHeader
-	 * @param primaryColumnValue
-	 * @param columnToClick
-	 * @param linkToClick
-	 * @param throwEx
-	 */
-	public void clickLinkInRow(String primaryColumnHeader, String primaryColumnValue, String columnToClick,
-			String linkToClick, boolean throwEx) {
-
-		Reporter.log("Beginning click for '" + linkToClick + "' in '" + columnToClick + "' where primary column is '"
-				+ primaryColumnHeader + "' and primary column value is '" + primaryColumnValue + ".", true);
-
-		// Get CellIndex for Primary column Header
-		int primaryColIndex = getColumnIndex(primaryColumnHeader, throwEx);
-		// Get CellIndex for Column to Read
-		int colToReadCellIndex = getColumnIndex(columnToClick, throwEx);
-		// Get the rowIndex for the row in the primary column.
-		int rowIndex = getRowIndex(primaryColIndex, primaryColumnValue, throwEx);
-
-		WebElement cell = getCell(rowIndex, colToReadCellIndex, throwEx);
-
-		cell.findElement(By.linkText(linkToClick)).click();
-	}
-
-	/**
-	 * Clicks a button in table row with that matches value 1 and value 2, and
-	 * contains the passed in Button Text.
-	 * 
-	 * @param rowValueOne
-	 * @param rowValueTwo
-	 * @param buttonText
-	 */
-	public void clickButtonInRow(String rowValueOne, String rowValueTwo, String buttonText) {
-		AutomationHelper.printMethodName();
-
-		// Take the two row values and concatenate them.
-		String myConcatenatedString = rowValueOne.trim() + " " + rowValueTwo.trim();
-		WebElement myRow = null;
-
-		// Create a list of table rows
-		List<WebElement> tableRows = table.findElements(By.tagName("tr"));
-
-		// Loop through all the table rows to find the row containing the value
-		// 1 and value 2 combination.
-		for (WebElement currentRow : tableRows) {
-			if (currentRow.getText().trim().contains(myConcatenatedString)) {
-				myRow = currentRow;
-				break;
-			}
-		}
-
-		// If we did not find a row, we should throw an exception and not
-		// process further.
-		if (myRow == null) {
-			throw new RuntimeException(
-					"Cannot click button. There are no rows found in the table for " + myConcatenatedString);
-		}
-
-		WebElement link = myRow.findElement(By.tagName("button"));
-		link.click();
-
-		// Allow a moment for the page to load.
-		// TODO - This can perhaps be improved upon.
-		AutomationHelper.waitSeconds(2);
-	}
+//	/**
+//	 * Clicks a button in table row with that matches value 1 and value 2, and
+//	 * contains the passed in Button Text.
+//	 * 
+//	 * @param rowValueOne
+//	 * @param rowValueTwo
+//	 * @param buttonText
+//	 */
+//	public void clickButtonInRow(String rowValueOne, String rowValueTwo, String buttonText) {
+//		AutomationHelper.printMethodName();
+//
+//		// Take the two row values and concatenate them.
+//		String myConcatenatedString = rowValueOne.trim() + " " + rowValueTwo.trim();
+//		WebElement myRow = null;
+//
+//		// Create a list of table rows
+//		List<WebElement> tableRows = table.findElements(By.tagName("tr"));
+//
+//		// Loop through all the table rows to find the row containing the value
+//		// 1 and value 2 combination.
+//		for (WebElement currentRow : tableRows) {
+//			if (currentRow.getText().trim().contains(myConcatenatedString)) {
+//				myRow = currentRow;
+//				break;
+//			}
+//		}
+//
+//		// If we did not find a row, we should throw an exception and not
+//		// process further.
+//		if (myRow == null) {
+//			throw new RuntimeException(
+//					"Cannot click button. There are no rows found in the table for " + myConcatenatedString);
+//		}
+//
+//		WebElement link = myRow.findElement(By.tagName("button"));
+//		link.click();
+//
+//		// Allow a moment for the page to load.
+//		// TODO - This can perhaps be improved upon.
+//		AutomationHelper.waitSeconds(2);
+//	}
 
 //	public boolean isRowInTable(String... rowValues) {
 //		// Boolean to indicate the row is found
@@ -441,32 +441,32 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		return rowIndex > -1;
 	}
 
-	/**
-	 * Returns whether a cell in a specified table row is selected or not.
-	 * 
-	 * @param primaryColumnHeader
-	 * @param primaryColumnValue
-	 * @param columnToRead
-	 * @param throwEx
-	 * @return boolean - true = checked | false = not checked
-	 */
-	public boolean isTableRowValueSelected(String primaryColumnHeader, String primaryColumnValue, String columnToRead,
-			boolean throwEx) {
-
-		Reporter.log("Beginning read for '" + columnToRead + "' where primary column is '" + primaryColumnHeader
-				+ "' and primary column value is '" + primaryColumnValue + ".", true);
-
-		// Get CellIndex for Primary column Header
-		int primaryColIndex = getColumnIndex(primaryColumnHeader, throwEx);
-		// Get CellIndex for Column to Read
-		int colToReadCellIndex = getColumnIndex(columnToRead, throwEx);
-		// Get the rowIndex for the row in the primary column.
-		int rowIndex = getRowIndex(primaryColIndex, primaryColumnValue, throwEx);
-
-		WebElement cell = getCell(rowIndex, colToReadCellIndex, throwEx);
-
-		return cell == null ? null : cell.findElement(By.xpath(".//input")).isSelected();
-	}
+//	/**
+//	 * Returns whether a cell in a specified table row is selected or not.
+//	 * 
+//	 * @param primaryColumnHeader
+//	 * @param primaryColumnValue
+//	 * @param columnToRead
+//	 * @param throwEx
+//	 * @return boolean - true = checked | false = not checked
+//	 */
+//	public boolean isTableRowValueSelected(String primaryColumnHeader, String primaryColumnValue, String columnToRead,
+//			boolean throwEx) {
+//
+//		Reporter.log("Beginning read for '" + columnToRead + "' where primary column is '" + primaryColumnHeader
+//				+ "' and primary column value is '" + primaryColumnValue + ".", true);
+//
+//		// Get CellIndex for Primary column Header
+//		int primaryColIndex = getColumnIndex(primaryColumnHeader, throwEx);
+//		// Get CellIndex for Column to Read
+//		int colToReadCellIndex = getColumnIndex(columnToRead, throwEx);
+//		// Get the rowIndex for the row in the primary column.
+//		int rowIndex = getRowIndex(primaryColIndex, primaryColumnValue, throwEx);
+//
+//		WebElement cell = getCell(rowIndex, colToReadCellIndex, throwEx);
+//
+//		return cell == null ? null : cell.findElement(By.xpath(".//input")).isSelected();
+//	}
 
 //	/**
 //	 * Returns a cell value from a table using the column specified in the row that
@@ -626,7 +626,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 	 * @param throwEx    - if table doesn't have THEAD objects
 	 * @return int - the Column Index of a column (0 based)
 	 */
-	protected int getColumnIndex(String columnName, boolean throwEx) {
+	public int getColumnIndex(String columnName, boolean throwEx) {
 		int columnIndex = -1;
 		// Get all the THEADS in a given table
 		List<WebElement> tHeads = table.findElements(By.tagName("th"));
@@ -680,102 +680,102 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		return currentPageTableRows;
 	}
 
-	/**
-	 * Returns a list of table rows for ALL table items. This takes care of paging
-	 * and will go to the end of a table to grab ALL the rows. After it is finished,
-	 * it returns to the first row.
-	 * <p>
-	 * Note: This methods DOES NOT COUNT the header row.
-	 * 
-	 * @param driver
-	 * @return List <WebElement> - Table Rows
-	 */
-	public List<WebElement> getTableRowsForPagingTable(WebDriver driver) {
+//	/**
+//	 * Returns a list of table rows for ALL table items. This takes care of paging
+//	 * and will go to the end of a table to grab ALL the rows. After it is finished,
+//	 * it returns to the first row.
+//	 * <p>
+//	 * Note: This methods DOES NOT COUNT the header row.
+//	 * 
+//	 * @param driver
+//	 * @return List <WebElement> - Table Rows
+//	 */
+//	public List<WebElement> getTableRowsForPagingTable(WebDriver driver) {
+//
+//		driver.manage().timeouts().implicitlyWait(SHORT_TIMEOUT, TimeUnit.SECONDS);
+//
+//		// Create an initial list of table rows
+//		List<WebElement> totalTableRows = table.findElements(By.xpath("//tr[descendant::td]"));
+//
+//		System.out.println("Total table row is now: " + totalTableRows.size());
+//
+//		// // Try to find the >> arrow in the pagination feature
+//		WebElement skipToNextEnabled;
+//
+//		do {
+//			skipToNextEnabled = null;
+//
+//			try {
+//				skipToNextEnabled = driver.findElement(By.xpath("//li[@class = 'PagedList-skipToNext']//a"));
+//			} catch (NoSuchElementException e) {
+//			}
+//
+//			if (skipToNextEnabled != null) {
+//				// If we find a reference to the button that is not disabled,
+//				// then click it
+//
+//				skipToNextEnabled.click();
+////				AutomationHelper.waitForPageToLoad(10);
+//
+//				// Add the table rows on this page to the List
+//				List<WebElement> currentTableRows = table.findElements(By.xpath("//tr[descendant::td]"));
+//
+//				for (WebElement x : currentTableRows) {
+//					totalTableRows.add(x);
+//				}
+//			}
+//
+//		} while (skipToNextEnabled != null);
+//
+//		// At last, we want to return to the main page of the table.
+//		// Attempt to click the << << link. This link is present where there are
+//		// many records in a table.
+//		// If it is not there, attempt << until it is disabled.
+//		try {
+//			// Try to click << << if it exists
+//			WebElement pageAll = null;
+//			pageAll = driver.findElement(By.xpath("//li[@class='PagedList-skipToFirst']//a"));
+//			pageAll.click();
+//
+//		} catch (NoSuchElementException e) {
+//		}
+//
+//		// If << << Does not exist, click << until it is disabled, letting us
+//		// know we are on the first page.
+//		WebElement skipToPrevious = null;
+//		do {
+//			try {
+//				// Set SkipToPrevious back to null for the next click
+//				skipToPrevious = null;
+//
+//				// Attempt the reference here. If it finds it, it will click. If
+//				// not, it will catch the exception
+//				skipToPrevious = driver.findElement(By.xpath("//li[@class='PagedList-skipToPrevious']//a"));
+//				skipToPrevious.click();
+//
+//			} catch (NoSuchElementException e) {
+//			}
+//
+//		} while (skipToPrevious != null);
+//
+//		driver.manage().timeouts().implicitlyWait(NORMAL_TIMEOUT, TimeUnit.SECONDS);
+//
+//		return totalTableRows;
+//	}
 
-		driver.manage().timeouts().implicitlyWait(SHORT_TIMEOUT, TimeUnit.SECONDS);
-
-		// Create an initial list of table rows
-		List<WebElement> totalTableRows = table.findElements(By.xpath("//tr[descendant::td]"));
-
-		System.out.println("Total table row is now: " + totalTableRows.size());
-
-		// // Try to find the >> arrow in the pagination feature
-		WebElement skipToNextEnabled;
-
-		do {
-			skipToNextEnabled = null;
-
-			try {
-				skipToNextEnabled = driver.findElement(By.xpath("//li[@class = 'PagedList-skipToNext']//a"));
-			} catch (NoSuchElementException e) {
-			}
-
-			if (skipToNextEnabled != null) {
-				// If we find a reference to the button that is not disabled,
-				// then click it
-
-				skipToNextEnabled.click();
-//				AutomationHelper.waitForPageToLoad(10);
-
-				// Add the table rows on this page to the List
-				List<WebElement> currentTableRows = table.findElements(By.xpath("//tr[descendant::td]"));
-
-				for (WebElement x : currentTableRows) {
-					totalTableRows.add(x);
-				}
-			}
-
-		} while (skipToNextEnabled != null);
-
-		// At last, we want to return to the main page of the table.
-		// Attempt to click the << << link. This link is present where there are
-		// many records in a table.
-		// If it is not there, attempt << until it is disabled.
-		try {
-			// Try to click << << if it exists
-			WebElement pageAll = null;
-			pageAll = driver.findElement(By.xpath("//li[@class='PagedList-skipToFirst']//a"));
-			pageAll.click();
-
-		} catch (NoSuchElementException e) {
-		}
-
-		// If << << Does not exist, click << until it is disabled, letting us
-		// know we are on the first page.
-		WebElement skipToPrevious = null;
-		do {
-			try {
-				// Set SkipToPrevious back to null for the next click
-				skipToPrevious = null;
-
-				// Attempt the reference here. If it finds it, it will click. If
-				// not, it will catch the exception
-				skipToPrevious = driver.findElement(By.xpath("//li[@class='PagedList-skipToPrevious']//a"));
-				skipToPrevious.click();
-
-			} catch (NoSuchElementException e) {
-			}
-
-		} while (skipToPrevious != null);
-
-		driver.manage().timeouts().implicitlyWait(NORMAL_TIMEOUT, TimeUnit.SECONDS);
-
-		return totalTableRows;
-	}
-
-	/**
-	 * Returns the number of rows in a given table. Note: this does not contain the
-	 * Header Row (THEAD).
-	 * 
-	 * @return int
-	 */
-	public int getTableRowCount() {
-		int rowCount = getTableRowsForPagingTable(driver).size();
-		if (rowCount == 0) {
-			throw new RuntimeException("There are no rows in the table.");
-		}
-		return rowCount;
-	}
+//	/**
+//	 * Returns the number of rows in a given table. Note: this does not contain the
+//	 * Header Row (THEAD).
+//	 * 
+//	 * @return int
+//	 */
+//	public int getTableRowCount() {
+//		int rowCount = getTableRowsForPagingTable(driver).size();
+//		if (rowCount == 0) {
+//			throw new RuntimeException("There are no rows in the table.");
+//		}
+//		return rowCount;
+//	}
 
 	/**
 	 * This method takes a table, Primary Column Header (THEAD), and a value in that
@@ -791,12 +791,11 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		int rowIndex = -1;
 
 		// Escape any special characters in the primaryColumnValue
-//		primaryColumnValue = AutomationHelper.escapeStringForRegEx(primaryColumnValue);
+		primaryColumnValue = AutomationHelper.escapeStringForRegEx(primaryColumnValue);
 
 		// Get a list of ALL of the table cells
 		AutomationHelper.adjustWaitTimeToShort();
 		List<WebElement> tableCells = table.findElements(By.tagName("td"));
-//		List<WebElement> tableCells = table.findElements(By.xpath("//table//th | //table//td"));
 
 		AutomationHelper.adjustWaitTimeToNormal();
 
@@ -806,8 +805,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 		for (WebElement currentCell : tableCells) {
 			int currentCellIndex = Integer.valueOf(currentCell.getAttribute("cellIndex"));
-			// TODO - Delete next line. Just for testing.
-			String currentCellText = currentCell.getText();
+
 			if (currentCellIndex == primaryColumnHeaderIndex) {
 				cellsInPrimaryCol.add(currentCell);
 			}
@@ -861,6 +859,95 @@ public class DiTables extends diCoreConfig.CoreConfig {
 		return rowIndex;
 	}
 
+	// TODO - New
+	/**
+	 * This method takes a table, Primary Column Header (THEAD), and a value in that
+	 * column and returns a row index for the passed in value. This method accepts a
+	 * parameter than will select the first record when multiples exist.
+	 * 
+	 * @param primaryColumnHeader
+	 * @param primaryColumnValue  (regex)
+	 * @param throwEx - when no value present
+	 * @param selectFirstRecord
+	 * @return int rowIndex
+	 */
+	protected int getRowIndex(int primaryColumnHeaderIndex, String primaryColumnValue, boolean throwEx,
+			boolean selectFirstRecord) {
+		// Variable to hold the row index.
+		int rowIndex = -1;
+
+		// Escape any special characters in the primaryColumnValue
+		primaryColumnValue = AutomationHelper.escapeStringForRegEx(primaryColumnValue);
+
+		// Get a list of ALL of the table cells
+		AutomationHelper.adjustWaitTimeToShort();
+		List<WebElement> tableCells = table.findElements(By.tagName("td"));
+
+		AutomationHelper.adjustWaitTimeToNormal();
+
+		// Get a list of all of the table cells that have a cellIndex
+		// corresponding to the primary column header.
+		List<WebElement> cellsInPrimaryCol = new ArrayList<WebElement>();
+
+		for (WebElement currentCell : tableCells) {
+			int currentCellIndex = Integer.valueOf(currentCell.getAttribute("cellIndex"));
+
+			if (currentCellIndex == primaryColumnHeaderIndex) {
+				cellsInPrimaryCol.add(currentCell);
+			}
+		}
+
+		// Creating a list for the final cell allows us to check for multiples
+		// and throw correct exceptions, if needed.
+		List<WebElement> finalCellList = new ArrayList<WebElement>();
+
+		// Loop through each cell in the primary column, and look for the
+		// primary column value, then take the rowIndex for that cell.
+		for (WebElement currentCell : cellsInPrimaryCol) {
+
+			String currentCellText = currentCell.getText().trim();
+
+			// The method below used to use .equals, but changed to .matches
+			// so that dates such as 12/15/2018 09:56 can be accounted for
+			// without using time (send wild card)
+			if (currentCellText.matches(primaryColumnValue.trim())) {
+				finalCellList.add(currentCell);
+			}
+		}
+
+		// Throw an exception if we do not find any cells the user is looking
+		// for.
+		if (throwEx) {
+			if (finalCellList.size() == 0) {
+				throw new RuntimeException("There are no cells in the column index " + primaryColumnHeaderIndex
+						+ " that match the value " + primaryColumnValue + " that was passed in. Cannot find a cell. ");
+			}
+		}
+
+		// Throw an exception if we find more than one cell with the same value.
+
+		if (selectFirstRecord == false && finalCellList.size() > 1) {
+			throw new RuntimeException("There are multiple cells in column index " + primaryColumnHeaderIndex
+					+ " with the value " + primaryColumnValue + ". Cannot determine a unique value.");
+		} else if (selectFirstRecord == true && finalCellList.size() > 1) {
+			// We need to
+		}
+
+		// If we don't wrap this in an IF, we can throw null pointer if
+		// exceptions are turned off.
+		if (finalCellList.size() == 1 || (finalCellList.size() > 1 && selectFirstRecord == true)) {
+
+			// Because a cell does not have a rowIndex, get the parent row
+			WebElement parentRow = finalCellList.get(0).findElement(By.xpath(".."));
+
+			// Store the row Index from the cell parent row in a variable to
+			// return.
+			rowIndex = Integer.valueOf(parentRow.getAttribute("rowIndex"));
+		}
+
+		return rowIndex;
+	}
+
 	/**
 	 * This method takes a table, Primary Column Header (THEAD), Secondary Column
 	 * Header (THEAD), and a values in both columns and returns a row index for the
@@ -873,7 +960,7 @@ public class DiTables extends diCoreConfig.CoreConfig {
 	 * @param throwEx
 	 * @return int rowIndex
 	 */
-	protected int getRowIndex(int primaryColumnHeaderIndex, String primaryColumnValue, int secondaryColumnHeaderIndex,
+	public int getRowIndex(int primaryColumnHeaderIndex, String primaryColumnValue, int secondaryColumnHeaderIndex,
 			String secondaryColumnValue, boolean throwEx) {
 		// Variable to hold the row index.
 		int rowIndex = -1;
@@ -1201,26 +1288,26 @@ public class DiTables extends diCoreConfig.CoreConfig {
 
 		}
 
-		/**
-		 * Utility Method to go to the first page in the patination links.
-		 */
-		public void goToFirstPageInPagination() {
-
-			// Do nothing if we are already on the first page.
-
-			if (getPaginationPageNumber() != 1) {
-
-				while (getPaginationPageNumber() != 1) {
-					WebElement backArrow = driver.findElement(
-							By.xpath("//ul[@class = 'ant-pagination page_cont']//li[@title = 'Previous Page']"));
-					backArrow.click();
-					waitForPageToLoad();
-
-				}
-
-			}
-
-		}
+//		/**
+//		 * Utility Method to go to the first page in the patination links.
+//		 */
+//		public void goToFirstPageInPagination() {
+//
+//			// Do nothing if we are already on the first page.
+//
+//			if (getPaginationPageNumber() != 1) {
+//
+//				while (getPaginationPageNumber() != 1) {
+//					WebElement backArrow = driver.findElement(
+//							By.xpath("//ul[@class = 'ant-pagination page_cont']//li[@title = 'Previous Page']"));
+//					backArrow.click();
+//					waitForPageToLoad();
+//
+//				}
+//
+//			}
+//
+//		}
 	}
 
 }

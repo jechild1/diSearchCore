@@ -3,6 +3,8 @@ package utilities;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -399,5 +401,60 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 		// We only need to pass a locator into the other method.
 		waitForObjectToDisappear(By.xpath("//span[text() = '" + notificationMessage + "']"), waitTimeInSeconds,
 				throwEx);
+	}
+
+	/**
+	 * Method to escape special characters of a string.
+	 * 
+	 * @param originalString
+	 * @return String escaped regular expression
+	 */
+	public static String escapeStringForRegEx(String originalString) {
+		final StringBuilder result = new StringBuilder();
+
+		final StringCharacterIterator iterator = new StringCharacterIterator(originalString);
+		char character = iterator.current();
+		while (character != CharacterIterator.DONE) {
+			/*
+			 * All literals need to have backslashes doubled.
+			 */
+			if (character == '.') {
+				result.append("\\.");
+			} else if (character == '\\') {
+				result.append("\\\\");
+			} else if (character == '?') {
+				result.append("\\?");
+			} else if (character == '*') {
+				result.append("\\*");
+			} else if (character == '+') {
+				result.append("\\+");
+			} else if (character == '&') {
+				result.append("\\&");
+			} else if (character == ':') {
+				result.append("\\:");
+			} else if (character == '{') {
+				result.append("\\{");
+			} else if (character == '}') {
+				result.append("\\}");
+			} else if (character == '[') {
+				result.append("\\[");
+			} else if (character == ']') {
+				result.append("\\]");
+			} else if (character == '(') {
+				result.append("\\(");
+			} else if (character == ')') {
+				result.append("\\)");
+			} else if (character == '^') {
+				result.append("\\^");
+			} else if (character == '$') {
+				result.append("\\$");
+			} else {
+				// the char is not a special one
+				// add it to the result as is
+				result.append(character);
+			}
+			character = iterator.next();
+		}
+		return result.toString();
 	}
 }

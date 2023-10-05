@@ -338,7 +338,6 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 	 * @return boolean
 	 */
 	public static boolean isWebElementEnabled(By locator) {
-		AutomationHelper.printMethodName();
 
 		WebElement currentWebElement = driver.findElement(locator);
 
@@ -379,6 +378,9 @@ public class AutomationHelper extends diCoreConfig.CoreConfig {
 			}
 
 		} while ((currentElapsedTime < waitTimeInMillis));
+		
+		//Print the time in the console.
+		Reporter.log("Waited " + (currentElapsedTime / 1000) + " seconds for the element with locator " + locator + "to be removed from DOM.", true);
 
 		if (throwEx && objectPresent) {
 			throw new NoSuchElementException("Waited for the element " + locator + " to disappear, but it did not.");

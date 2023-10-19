@@ -217,12 +217,12 @@ public abstract class CoreConfig {
 					Reporter.log("The page '" + AutomationHelper.getPageTitle() + "' is fully loaded now. /n"
 							+ "It took " + i + " seconds to load.", true);
 
-//TODO - This needs a second look because it prints an empty string
+					// TODO - This needs a second look because it prints an empty string
 					Reporter.log("The page '" + driver.getCurrentUrl() + "' is fully loaded now. /n" + "It took " + i
 							+ " seconds to load.", true);
 					break;
-
 				}
+				
 			}
 		}
 
